@@ -20,7 +20,7 @@ const slides = [
 ];
 
 /** Chemin d'accès aux images */
-let sourceImg = "./assets/images/slideshow/";
+const sourceImg = "./assets/images/slideshow/";
 
 /** Récupération de la bannière */
 let mainBanner = document.querySelector('#banner');
@@ -72,7 +72,12 @@ for(let i=0; i < slides.length; i++){
 	const bPoint = document.createElement("span");
 	/** La classe "dot" est associé à l'élément précédemment créer */
 	bPoint.className = "dot";
+	/** Création d'un id pour chaque bp ayant la valeur i */
 	bPoint.setAttribute("id", i);
+	/** Initialisation du premier bullet point */
+	if(bPoint.getAttribute('id') == 0){
+		bPoint.classList.add("dot_selected");
+	}
 	/** Le <span> est positionné dans l'élément parent  */
 	bulletPoints.appendChild(bPoint);
 	
@@ -80,44 +85,57 @@ for(let i=0; i < slides.length; i++){
 
 /** Parcours des slide vers la droite */
 function slideDroite(){
-	
+	//** index incrémente jusqu'à la dernière valeur de l'index de slides[] puis passe à zéro si on le dépasse */
 	if(index < slides.length - 1){
 		index++;
 	}
 	else {
 		index = 0;
 	}
-
+	/** Génération de l'image correspondante en fonction de son index */
 	let imgName = slides[index].image;
 	let imgText = slides[index].tagLine;
 	slideImage.src = sourceImg + imgName;
 	slideText.innerHTML = imgText;
+	/** Mise en surbrillance du bullet point correspondant */
 	let bPoint = document.querySelectorAll('.dot');
-	let selectedPoint = document.getElementById(index);
-	bPoint.classList.remove("dot_selected");
-	selectedPoint.classList.add("dot_selected");
-	console.log("L'image affichée est la n° " + index + " " + imgName + " " + "Source : " + slideImage.src);
+	bPoint.forEach(point => {
+		if(point.getAttribute('id') == index){
+			point.classList.add("dot_selected");
+		} else if(point.getAttribute('id') != index){
+			point.classList.remove("dot_selected");
+		}
+	});
+	/** Suivi dans la console */
+	console.log("L'image affichée est la n° " + index + " " + imgName +" Source : " + slideImage.src);
 }
 /** Parcours des slide vers la gauche */
 function slideGauche(){
-	
+	//** index décrémente jusqu'à la première valeur de l'index de slides[] puis passe à la veleur max de l'index si on passe en dessous de zéro */
 	if(index > 0){
 		index--;
 	}
 	else {
 		index = slides.length - 1;
 	}
-
+	/** Génération de l'image correspondante en fonction de son index */
 	let imgName = slides[index].image;
 	let imgText = slides[index].tagLine;
 	slideImage.src = sourceImg + imgName;
 	slideText.innerHTML = imgText;
+	/** Mise en surbrillance du bullet point correspondant */
 	let bPoint = document.querySelectorAll('.dot');
-	let selectedPoint = document.getElementById(index);
-	bPoint.classList.remove("dot_selected");
-	selectedPoint.classList.add("dot_selected");
+	bPoint.forEach(point => {
+		if(point.getAttribute('id') == index){
+			point.classList.add("dot_selected");
+		} else if(point.getAttribute('id') != index){
+			point.classList.remove("dot_selected");
+		}
+	});
+	/** Suivi dans la console */
 	console.log("L'image affichée est la n° " + index + " " + imgName + " " + "Source : " + slideImage.src);
 }
+
 
 /** Fonction de test de fonctionnement des flèches */
 function testLeftArrow(){
